@@ -40,7 +40,7 @@ namespace IH_Paint
             drawingPanel.MouseDown += drawingPanel_MouseDown;
             drawingPanel.MouseMove += drawingPanel_MouseMove;
             drawingPanel.MouseUp += drawingPanel_MouseUp;
-            drawingPanel.MouseWheel += drawingPanel_MouseWheel; //Zoom
+            /*drawingPanel.MouseWheel += drawingPanel_MouseWheel; //Zoom*/
 
             _gbTextSettingsVisibleBacked = gbTextSettings.Visible;
             _drawingState.CurrentFont = new Font("Arial", 12);
@@ -304,7 +304,7 @@ namespace IH_Paint
 
             _drawingState.ZoomFactor = 1.0f;
             _drawingState.PanOffset = Point.Empty;
-            lblZoomLevelStatus.Text = $"Zoom: {(_drawingState.ZoomFactor * 100):F0}%";
+            /*lblZoomLevelStatus.Text = $"Zoom: {(_drawingState.ZoomFactor * 100):F0}%";*/
 
             drawingPanel.Invalidate();
         }
@@ -341,37 +341,20 @@ namespace IH_Paint
                     }
                 }
             }
-            e.Graphics.Clear(drawingPanel.BackColor); 
-            Matrix originalTransform = e.Graphics.Transform.Clone();
+            e.Graphics.Clear(drawingPanel.BackColor);
             e.Graphics.ResetTransform();
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-            System.Diagnostics.Debug.WriteLine($"Paint: ZF={_drawingState.ZoomFactor:F4}, PO=({_drawingState.PanOffset.X:F2},{_drawingState.PanOffset.Y:F2})");
+            // e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
-            e.Graphics.TranslateTransform(-_drawingState.PanOffset.X, -_drawingState.PanOffset.Y);
-            Matrix m = e.Graphics.Transform;
-            System.Diagnostics.Debug.WriteLine($"Paint After Translate: Matrix OffsetX={m.OffsetX:F2}, OffsetY={m.OffsetY:F2}");
-
-            e.Graphics.ScaleTransform(_drawingState.ZoomFactor, _drawingState.ZoomFactor);
+            e.Graphics.TranslateTransform(-_drawingState.PanOffset.X, -_drawingState.PanOffset.Y); 
+            e.Graphics.ScaleTransform(_drawingState.ZoomFactor, _drawingState.ZoomFactor);    
 
             if (_canvasBitmap != null)
             {
                 e.Graphics.DrawImageUnscaled(_canvasBitmap, 0, 0);
             }
-            _currentTool?.PaintPreview(e.Graphics, _drawingState);
 
-            e.Graphics.Transform = originalTransform;
-
-            PointF testWorldPoint = new PointF(100f, 100f);
-            float expectedScreenX = (testWorldPoint.X - _drawingState.PanOffset.X) * _drawingState.ZoomFactor;
-            float expectedScreenY = (testWorldPoint.Y - _drawingState.PanOffset.Y) * _drawingState.ZoomFactor;
-
-            System.Diagnostics.Debug.WriteLine($"Magenta Dot Debug: World(100,100) -> Expected Screen({expectedScreenX:F2},{expectedScreenY:F2})");
-
-            using (SolidBrush debugBrush = new SolidBrush(Color.FromArgb(200, Color.LimeGreen))) // Changed color
-            {
-                e.Graphics.FillEllipse(debugBrush, expectedScreenX - 2, expectedScreenY - 2, 4, 4);
-            }
+            _currentTool?.PaintPreview(e.Graphics, _drawingState); // Preview will also be on unzoomed graphics
         }
 
         private void drawingPanel_MouseDown(object sender, MouseEventArgs e)
@@ -403,7 +386,7 @@ namespace IH_Paint
         }
         private void drawingPanel_MouseWheel(object sender, MouseEventArgs e)
         {
-            PointF screenMouseAtZoom = e.Location;
+            /*PointF screenMouseAtZoom = e.Location;
             float oldZoom = _drawingState.ZoomFactor;
             float newZoom = oldZoom * ((e.Delta > 0) ? 1.1f : (1.0f / 1.1f));
             newZoom = Math.Max(0.1f, Math.Min(newZoom, 10.0f));
@@ -414,7 +397,7 @@ namespace IH_Paint
             _drawingState.PanOffset = new PointF(newPanX, newPanY);
             System.Diagnostics.Debug.WriteLine($"MouseWheel: ZF={_drawingState.ZoomFactor:F4}, NewPO=({_drawingState.PanOffset.X:F2},{_drawingState.PanOffset.Y:F2}) | ScreenMouse=({screenMouseAtZoom.X},{screenMouseAtZoom.Y})");
             lblZoomLevelStatus.Text = $"Zoom: {(_drawingState.ZoomFactor * 100):F0}%";
-            drawingPanel.Invalidate();
+            drawingPanel.Invalidate();*/
         }
 
         private void btnEraser_Click(object sender, EventArgs e) 
