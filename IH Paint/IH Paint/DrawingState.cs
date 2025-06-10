@@ -36,9 +36,10 @@ namespace IH_Paint
 
         public Point ScreenToWorld(Point screenPoint)
         {
-            float worldX = (screenPoint.X / ZoomFactor) + PanOffset.X;
+            /*float worldX = (screenPoint.X / ZoomFactor) + PanOffset.X;
             float worldY = (screenPoint.Y / ZoomFactor) + PanOffset.Y;
-            return new Point((int)Math.Round(worldX), (int)Math.Round(worldY));
+            return new Point((int)Math.Round(worldX), (int)Math.Round(worldY));*/
+            return screenPoint;
         }
     }
 }
