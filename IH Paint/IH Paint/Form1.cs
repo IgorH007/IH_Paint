@@ -182,9 +182,6 @@ namespace IH_Paint
         }
         private void SetTool(ITool newTool)
         {
-
-
-
             _currentTool?.Deactivate(_drawingState);
             _currentTool = newTool;
             _currentTool.Activate(_drawingState); 
@@ -475,16 +472,7 @@ namespace IH_Paint
         {
             SetTool(new TextTool());
         }
-
         
-
-        private void actualSize100ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _drawingState.ZoomFactor = 1.0f;
-            _drawingState.PanOffset = PointF.Empty;         
-            lblZoomLevelStatus.Text = $"Zoom: {(_drawingState.ZoomFactor * 100):F0}%";
-            drawingPanel.Invalidate();
-        }
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openFileDialogMain.Filter = "Image Files(*.BMP;*.JPG;*.GIF;*.PNG)|*.BMP;*.JPG;*.GIF;*.PNG|All files (*.*)|*.*";
